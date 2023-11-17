@@ -19,7 +19,7 @@ env:
  # S3 bucket for the Terraform state\
  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
  AWS_REGION: us-east-1
- EKS_CLUSTER: vprofile-eks
+ EKS_CLUSTER: ${{ secrets.EKS_CLUSTER}}
 
 jobs:
    terraform:
@@ -75,7 +75,7 @@ jobs:
        - name: Get Kube config file
          id: getconfig
          if: steps.apple.outcome == 'success'
-         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER }} 
+         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER }} 
 
        - name: Install Ingress controller
          if: steps.apple.outcome == 'success' && steps.getconfig.outcome == 'success'
